@@ -11,7 +11,7 @@ import repository.BaiHatRepository;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet (name = "", urlPatterns = {"/song-management/delete"})
+@WebServlet (name = "delete", urlPatterns = {"/song-management/delete"})
 public class deleteServlet extends HttpServlet {
     private final BaiHatRepository repository = new BaiHatRepository();
 

@@ -19,22 +19,23 @@
             <th>Phát hành đĩa</th>
             <th>Ngày ra mắt</th>
         </tr>
-        <c:forEach items="${bhl}" var="baihat">
-            <td>${bhl.Id}</td>
-            <td>${bhl.tenBaiHat}</td>
-            <td>${bhl.tenTacGia}</td>
-            <td>${bhl.thoiLuong}</td>
-            <td>${bhl.ngaySanXuat}</td>
-            <td>${bhl.gia}</td>
-            <td>${bhl.caSiId}</td>
-            <td>${bhl.phatHanhDia}</td>
-            <td>${bhl.ngayRaMat}</td>
-            <td class="action">
-                <form action="/song-management/delete">
-                    <a type="submit" class="btn btn-danger">Xoa</a>
-                </form>
-
-            </td>
+        <c:forEach items="${baiHats}" var="baihat">
+            <tr>
+                <td>${baihat.Id}</td>
+                <td>${baihat.tenBaiHat}</td>
+                <td>${baihat.tenTacGia}</td>
+                <td>${baihat.thoiLuong}</td>
+                <td>${baihat.ngaySanXuat}</td>
+                <td>${baihat.gia}</td>
+                <td>${baihat.caSiId}</td>
+                <td>${baihat.phatHanhDia}</td>
+                <td>${baihat.ngayRaMat}</td>
+                <td class="action">
+                    <form action="/song-management/delete" method="post">
+                        <a type="submit" class="btn btn-danger">Xoa</a>
+                    </form>
+                </td>
+            </tr>
         </c:forEach>
     </table>
 </body>
