@@ -21,7 +21,7 @@
         </tr>
         <c:forEach items="${baiHats}" var="baihat">
             <tr>
-                <td>${baihat.Id}</td>
+                <td>${baihat.id}</td>
                 <td>${baihat.tenBaiHat}</td>
                 <td>${baihat.tenTacGia}</td>
                 <td>${baihat.thoiLuong}</td>
