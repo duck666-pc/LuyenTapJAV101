@@ -31,9 +31,7 @@
                 <td>${baihat.phatHanhDia}</td>
                 <td>${baihat.ngayRaMat}</td>
                 <td class="action">
-                    <form action="/song-management/delete" method="post">
-                        <a type="submit" class="btn btn-danger">Xoa</a>
-                    </form>
+                    <a href="${pageContext.request.contextPath}/song-management/delete?id=${book.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>
