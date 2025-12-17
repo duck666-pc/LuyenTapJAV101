@@ -31,7 +31,7 @@
                 <td>${baihat.phatHanhDia}</td>
                 <td>${baihat.ngayRaMat}</td>
                 <td class="action">
-                    <a href="${pageContext.request.contextPath}/song-management/delete?id=${book.id}">Delete</a>
+                    <a href="${pageContext.request.contextPath}/song-management/delete?id=${baihat.id}">Delete</a>
                 </td>
             </tr>
         </c:forEach>
