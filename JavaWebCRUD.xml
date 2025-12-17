@@ -1,0 +1,114 @@
+<templateSet group="JavaWebCRUD">
+
+    <!-- MODEL TEMPLATES -->
+    <template name="jfield" value="private $TYPE$ $NAME$;&#10;&#10;public $TYPE$ get$CAPITALIZED_NAME$() {&#10;    return $NAME$;&#10;}&#10;&#10;public void set$CAPITALIZED_NAME$($TYPE$ $NAME$) {&#10;    this.$NAME$ = $NAME$;&#10;}&#10;$END$" description="Create field with getter and setter" toReformat="true" toShortenFQNames="true">
+        <variable name="TYPE" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+        <variable name="CAPITALIZED_NAME" expression="capitalize(NAME)" defaultValue="" alwaysStopAt="false" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <!-- REPOSITORY TEMPLATES -->
+    <template name="jrepo-getall" value="public List&lt;$MODEL$&gt; getAll() throws Exception {&#10;    List&lt;$MODEL$&gt; list = new ArrayList&lt;&gt;();&#10;    String sql = &quot;SELECT * FROM &quot; + TABLE_NAME;&#10;    &#10;    try (Connection conn = DbConnector.getConnection();&#10;         Statement stmt = conn.createStatement();&#10;         ResultSet rs = stmt.executeQuery(sql)) {&#10;        &#10;        while (rs.next()) {&#10;            list.add(mapResultSetToObject(rs));&#10;        }&#10;    }&#10;    return list;&#10;}&#10;$END$" description="Repository getAll() method" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <template name="jrepo-getbyid" value="public $MODEL$ getById(Integer id) throws Exception {&#10;    String sql = &quot;SELECT * FROM &quot; + TABLE_NAME + &quot; WHERE id = ?&quot;;&#10;    &#10;    try (Connection conn = DbConnector.getConnection();&#10;         PreparedStatement pstmt = conn.prepareStatement(sql)) {&#10;        &#10;        pstmt.setInt(1, id);&#10;        ResultSet rs = pstmt.executeQuery();&#10;        &#10;        if (rs.next()) {&#10;            return mapResultSetToObject(rs);&#10;        }&#10;    }&#10;    return null;&#10;}&#10;$END$" description="Repository getById() method" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <template name="jrepo-insert" value="public int insert($MODEL$ model) throws Exception {&#10;    String sql = &quot;INSERT INTO &quot; + TABLE_NAME + &quot; ($COLUMNS$) VALUES ($PLACEHOLDERS$)&quot;;&#10;    &#10;    try (Connection conn = DbConnector.getConnection();&#10;         PreparedStatement pstmt = conn.prepareStatement(sql)) {&#10;        &#10;        $SET_PARAMETERS$&#10;        return pstmt.executeUpdate();&#10;    }&#10;}&#10;$END$" description="Repository insert() method" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <variable name="COLUMNS" expression="" defaultValue="&quot;name, value&quot;" alwaysStopAt="true" />
+        <variable name="PLACEHOLDERS" expression="" defaultValue="&quot;?, ?&quot;" alwaysStopAt="true" />
+        <variable name="SET_PARAMETERS" expression="" defaultValue="&quot;// Set parameters here&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <template name="jrepo-update" value="public int update($MODEL$ model) throws Exception {&#10;    String sql = &quot;UPDATE &quot; + TABLE_NAME + &quot; SET $UPDATE_COLUMNS$ WHERE id = ?&quot;;&#10;    &#10;    try (Connection conn = DbConnector.getConnection();&#10;         PreparedStatement pstmt = conn.prepareStatement(sql)) {&#10;        &#10;        $SET_PARAMETERS$&#10;        return pstmt.executeUpdate();&#10;    }&#10;}&#10;$END$" description="Repository update() method" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <variable name="UPDATE_COLUMNS" expression="" defaultValue="&quot;name = ?, value = ?&quot;" alwaysStopAt="true" />
+        <variable name="SET_PARAMETERS" expression="" defaultValue="&quot;// Set parameters here&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <template name="jrepo-delete" value="public static int deleteById(Integer id) throws Exception {&#10;    String sql = &quot;DELETE FROM &quot; + TABLE_NAME + &quot; WHERE id = ?&quot;;&#10;    &#10;    try (Connection conn = DbConnector.getConnection();&#10;         PreparedStatement pstmt = conn.prepareStatement(sql)) {&#10;        &#10;        pstmt.setInt(1, id);&#10;        return pstmt.executeUpdate();&#10;    }&#10;}&#10;$END$" description="Repository deleteById() method" toReformat="true" toShortenFQNames="true">
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <template name="jrepo-mapper" value="private $MODEL$ mapResultSetToObject(ResultSet rs) throws SQLException {&#10;    $MODEL$ obj = new $MODEL$();&#10;    obj.setId(rs.getInt(&quot;id&quot;));&#10;    $MAPPINGS$&#10;    return obj;&#10;}&#10;$END$" description="Repository mapper method" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <variable name="MAPPINGS" expression="" defaultValue="&quot;// Add field mappings here&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_DECLARATION" value="true" />
+        </context>
+    </template>
+
+    <!-- SERVLET TEMPLATES -->
+    <template name="jservlet-view" value="package servlet;&#10;&#10;import jakarta.servlet.ServletException;&#10;import jakarta.servlet.annotation.WebServlet;&#10;import jakarta.servlet.http.HttpServlet;&#10;import jakarta.servlet.http.HttpServletRequest;&#10;import jakarta.servlet.http.HttpServletResponse;&#10;import model.$MODEL$;&#10;import repository.$MODEL$Repository;&#10;&#10;import java.io.IOException;&#10;import java.util.List;&#10;&#10;@WebServlet(&quot;/$PATH$&quot;)&#10;public class View$MODEL$Servlet extends HttpServlet {&#10;    private final $MODEL$Repository repository = new $MODEL$Repository();&#10;&#10;    @Override&#10;    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {&#10;        try {&#10;            List&lt;$MODEL$&gt; list = repository.getAll();&#10;            req.setAttribute(&quot;$ATTRIBUTE$&quot;, list);&#10;            req.getRequestDispatcher(&quot;/views/list-$PATH$.jsp&quot;).forward(req, resp);&#10;        } catch (Exception e) {&#10;            e.printStackTrace();&#10;        }&#10;    }&#10;}&#10;$END$" description="Create ViewServlet for listing" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <variable name="PATH" expression="" defaultValue="&quot;yourmodel&quot;" alwaysStopAt="true" />
+        <variable name="ATTRIBUTE" expression="" defaultValue="&quot;items&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_CODE" value="true" />
+        </context>
+    </template>
+
+    <template name="jservlet-delete" value="package servlet;&#10;&#10;import jakarta.servlet.ServletException;&#10;import jakarta.servlet.annotation.WebServlet;&#10;import jakarta.servlet.http.HttpServlet;&#10;import jakarta.servlet.http.HttpServletRequest;&#10;import jakarta.servlet.http.HttpServletResponse;&#10;import repository.$MODEL$Repository;&#10;&#10;import java.io.IOException;&#10;&#10;@WebServlet(&quot;/$PATH$/delete&quot;)&#10;public class Delete$MODEL$Servlet extends HttpServlet {&#10;    private final $MODEL$Repository repository = new $MODEL$Repository();&#10;&#10;    @Override&#10;    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {&#10;        String idStr = req.getParameter(&quot;id&quot;);&#10;        try {&#10;            Integer id = Integer.valueOf(idStr);&#10;            $MODEL$Repository.deleteById(id);&#10;            resp.sendRedirect(req.getContextPath() + &quot;/$PATH$&quot;);&#10;        } catch (Exception e) {&#10;            e.printStackTrace();&#10;            resp.sendRedirect(req.getContextPath() + &quot;/$PATH$&quot;);&#10;        }&#10;    }&#10;}&#10;$END$" description="Create DeleteServlet" toReformat="true" toShortenFQNames="true">
+        <variable name="MODEL" expression="" defaultValue="&quot;YourModel&quot;" alwaysStopAt="true" />
+        <variable name="PATH" expression="" defaultValue="&quot;yourmodel&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_CODE" value="true" />
+        </context>
+    </template>
+
+    <!-- JSP TEMPLATES -->
+    <template name="jsp-input" value="&lt;tr&gt;&#10;    &lt;td&gt;$LABEL$: &lt;/td&gt;&#10;    &lt;td&gt;&#10;        &lt;input type=&quot;$TYPE$&quot; name=&quot;$NAME$&quot; value=&quot;${$OBJECT$.$NAME$}&quot; $REQUIRED$&gt;&#10;    &lt;/td&gt;&#10;&lt;/tr&gt;&#10;$END$" description="JSP form input field" toReformat="false" toShortenFQNames="false">
+        <variable name="LABEL" expression="" defaultValue="&quot;Label&quot;" alwaysStopAt="true" />
+        <variable name="TYPE" expression="" defaultValue="&quot;text&quot;" alwaysStopAt="true" />
+        <variable name="NAME" expression="" defaultValue="&quot;fieldName&quot;" alwaysStopAt="true" />
+        <variable name="OBJECT" expression="" defaultValue="&quot;object&quot;" alwaysStopAt="true" />
+        <variable name="REQUIRED" expression="" defaultValue="&quot;required&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JSP" value="true" />
+            <option name="HTML" value="true" />
+        </context>
+    </template>
+
+    <template name="jsp-checkbox" value="&lt;tr&gt;&#10;    &lt;td&gt;$LABEL$: &lt;/td&gt;&#10;    &lt;td&gt;&#10;        &lt;input type=&quot;checkbox&quot; name=&quot;$NAME$&quot; ${$OBJECT$.$PROPERTY$ ? 'checked' : ''}&gt;$CHECKBOX_LABEL$&#10;    &lt;/td&gt;&#10;&lt;/tr&gt;&#10;$END$" description="JSP checkbox field" toReformat="false" toShortenFQNames="false">
+        <variable name="LABEL" expression="" defaultValue="&quot;Label&quot;" alwaysStopAt="true" />
+        <variable name="NAME" expression="" defaultValue="&quot;fieldName&quot;" alwaysStopAt="true" />
+        <variable name="OBJECT" expression="" defaultValue="&quot;object&quot;" alwaysStopAt="true" />
+        <variable name="PROPERTY" expression="" defaultValue="&quot;property&quot;" alwaysStopAt="true" />
+        <variable name="CHECKBOX_LABEL" expression="" defaultValue="&quot;Label Text&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JSP" value="true" />
+            <option name="HTML" value="true" />
+        </context>
+    </template>
+
+    <!-- HELPER TEMPLATES -->
+    <template name="jdb-connector" value="package helper;&#10;&#10;import java.sql.Connection;&#10;import java.sql.DriverManager;&#10;&#10;public final class DbConnector {&#10;    private static final String USERNAME = &quot;$USERNAME$&quot;;&#10;    private static final String PASSWORD = &quot;$PASSWORD$&quot;;&#10;    private static final String SERVER = &quot;localhost&quot;;&#10;    private static final String PORT = &quot;1433&quot;;&#10;    private static final String DATABASE_NAME = &quot;$DATABASE$&quot;;&#10;    private static final boolean USING_SSL = true;&#10;&#10;    private static String CONNECT_STRING;&#10;&#10;    static {&#10;        try {&#10;            Class.forName(&quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;);&#10;&#10;            StringBuilder connectStringBuilder = new StringBuilder();&#10;            connectStringBuilder.append(&quot;jdbc:sqlserver://&quot;)&#10;                    .append(SERVER).append(&quot;:&quot;).append(PORT).append(&quot;;&quot;)&#10;                    .append(&quot;databaseName=&quot;).append(DATABASE_NAME).append(&quot;;&quot;)&#10;                    .append(&quot;user=&quot;).append(USERNAME).append(&quot;;&quot;)&#10;                    .append(&quot;password=&quot;).append(PASSWORD).append(&quot;;&quot;);&#10;            &#10;            if (USING_SSL) {&#10;                connectStringBuilder.append(&quot;encrypt=true;trustServerCertificate=true;&quot;);&#10;            }&#10;            CONNECT_STRING = connectStringBuilder.toString();&#10;            System.out.println(&quot;Connect String: &quot; + CONNECT_STRING);&#10;        } catch (ClassNotFoundException ex) {&#10;            System.out.println(&quot;Không tìm thấy SQLServer Driver&quot;);&#10;        }&#10;    }&#10;&#10;    public synchronized static Connection getConnection() throws Exception {&#10;        return DriverManager.getConnection(CONNECT_STRING);&#10;    }&#10;}&#10;$END$" description="Create Database Connector class" toReformat="true" toShortenFQNames="true">
+        <variable name="USERNAME" expression="" defaultValue="&quot;sa&quot;" alwaysStopAt="true" />
+        <variable name="PASSWORD" expression="" defaultValue="&quot;123456&quot;" alwaysStopAt="true" />
+        <variable name="DATABASE" expression="" defaultValue="&quot;YourDatabase&quot;" alwaysStopAt="true" />
+        <context>
+            <option name="JAVA_CODE" value="true" />
+        </context>
+    </template>
+
+</templateSet>
