@@ -1,8 +1,8 @@
 package model;
 
-import java.util.Date;
+import java.util.*;
 
-public class BaiHat {
+public class BaiHat implements List<BaiHat> {
     private int id;
     private String tenBaiHat;
     private String tenTacGia;
@@ -57,8 +57,8 @@ public class BaiHat {
         this.thoiLuong = thoiLuong;
     }
 
-    public Date getNgaySanXuat() {
-        return ngaySanXuat;
+    public java.sql.Date getNgaySanXuat() {
+        return (java.sql.Date) ngaySanXuat;
     }
 
     public void setNgaySanXuat(Date ngaySanXuat) {
@@ -89,11 +89,126 @@ public class BaiHat {
         this.phatHanhDia = phatHanhDia;
     }
 
-    public Date getNgayRaMat() {
-        return ngayRaMat;
+    public java.sql.Date getNgayRaMat() {
+        return (java.sql.Date) ngayRaMat;
     }
 
     public void setNgayRaMat(Date ngayRaMat) {
         this.ngayRaMat = ngayRaMat;
+    }
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<BaiHat> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(BaiHat baiHat) {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends BaiHat> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends BaiHat> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    @Override
+    public BaiHat get(int index) {
+        return null;
+    }
+
+    @Override
+    public BaiHat set(int index, BaiHat element) {
+        return null;
+    }
+
+    @Override
+    public void add(int index, BaiHat element) {
+
+    }
+
+    @Override
+    public BaiHat remove(int index) {
+        return null;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return 0;
+    }
+
+    @Override
+    public ListIterator<BaiHat> listIterator() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<BaiHat> listIterator(int index) {
+        return null;
+    }
+
+    @Override
+    public List<BaiHat> subList(int fromIndex, int toIndex) {
+        return null;
     }
 }
